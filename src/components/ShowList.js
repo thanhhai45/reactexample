@@ -26,7 +26,8 @@ class FormAdd extends Component {
                                 <td>{item.fullname}</td>
                                 <td>{item.phone}</td>
                                 <td>
-                                    <button className="waves-effect waves-light btn green">Edit</button>
+                                    <button onClick={this.props.dataEdit.bind(this, item.id)}
+                                      className="waves-effect waves-light btn green">Edit</button>
                                     &nbsp;&nbsp;&nbsp;
                                     <button onClick={this.props.todoDelete.bind(this, item.id)}
                                             className="waves-effect waves-light btn red">Delete</button>
