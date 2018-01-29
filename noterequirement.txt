@@ -1,0 +1,4 @@
+Phần Edit data
+check kiểu dữ liệu của 
+độ dài fullname > 5 và < 50
+check số phone có độ dài 10-11 bắt đầu bằng 09 hoặc 01
