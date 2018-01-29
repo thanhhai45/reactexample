@@ -21,11 +21,19 @@ const todoslist = [
     }
 ];
 
+const object = {
+  id: '',
+  fullname: '',
+  phone: ''
+};
+
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: todoslist
+      list: todoslist,
+      obj: object
     };
 
     // const addData = this.addData.bind(this);
@@ -34,8 +42,14 @@ class App extends Component {
     return (
       <div className="container">
         <h1 className="title">CRUD TODOS APP</h1>
-        <FormAdd addData={this.addData.bind(this)}/>
-        <ShowList todolist={this.state.list} todoDelete={this.removeData.bind(this)}/>
+        <FormAdd addData={this.addData.bind(this)} 
+                  listData={this.state.list}
+                  dataWillEdit={this.state.obj}
+        />
+        <ShowList todolist={this.state.list} 
+                  todoDelete={this.removeData.bind(this)} 
+                  dataEdit={this.findData.bind(this)}
+        />
       </div>
     );
   }
@@ -58,6 +72,10 @@ class App extends Component {
         console.log(this.state.list);
         this.setState({list: this.state.list});
     }
+  }
+
+  findData = (id) => {
+    this.setState({ obj: _.find(this.state.list, function (o) { return o.id === id; }) });
   }
 
   // findDataById = (id) => {
