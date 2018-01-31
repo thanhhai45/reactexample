@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import './FormAdd.css';
 class FormAdd extends Component {
     constructor(props) {
         super(props);
@@ -7,11 +7,15 @@ class FormAdd extends Component {
         this.state = {
             id : id,
             fullname: fullname,
-            phone: phone
+            phone: phone,
+            errorName : '',
+            errorID: '',
+            errorPhone: ''
         }
         this.handleChangeId = this.handleChangeId.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangePhone = this.handleChangePhone.bind(this);
+        this.handleBlurName = this.handleBlurName.bind(this);
     }
 
     addData = (e) => {
@@ -42,7 +46,29 @@ class FormAdd extends Component {
     handleChangePhone(event) {
         this.setState({phone: event.target.value});
     }
+    handleBlurName = (event) => {
+         if (event.keyCode === 8 && event.target.value.length === 0) {
+            this.setState({errorName: ''});
+         }
+        else if (event.target.value.length < 5 || event.target.value.length > 50) {
+            this.setState({errorName: 'Data not less than five character'});
+        }
+        else {
+            this.setState({errorName: ''});
+        }
+    };
 
+    handleBlurPhone = (event) => {
+        if (event.keyCode === 8 && event.target.value.length === 0) {
+            this.setState({errorPhone: ''});
+        }
+        else if (event.target.value.length < 10 || event.target.value.length > 11) {
+            this.setState({errorPhone: 'Data not less than 10 and more than 11 number'});
+        }
+        else {
+            this.setState({errorPhone: ''});
+        }
+    };
     render() {
         return(
             <form action="" onSubmit={this.addData.bind(this)}>
@@ -56,10 +82,24 @@ class FormAdd extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="text" ref="id" placeholder="ID" value={this.state.id}/></td>
-                            <td><input type="text" onChange={this.handleChangeName} ref="name" placeholder="FullName" value={this.state.fullname}/></td>
-                            <td><input type="text" onChange={this.handleChangePhone} ref="phone" placeholder="Phone Number" value={this.state.phone}/></td>
+                        <tr className="formadd">
+                            <td><input onChange={this.handleChangeId} type="text" ref="id" placeholder="ID" value={this.state.id}/>
+                                <span>{this.state.errorID}</span></td>
+                            <td><input
+                                       type="text"
+                                       onChange={this.handleChangeName}
+                                       onKeyUp={this.handleBlurName}
+                                       ref="name" placeholder="FullName" value={this.state.fullname}/>
+                                <span>{this.state.errorName}</span>
+                            </td>
+                            <td>
+                                <input type="number"
+                                       onChange={this.handleChangePhone}
+                                       onKeyUp={this.handleBlurPhone}
+                                       ref="phone" placeholder="Phone Number"
+                                       value={this.state.phone}/>
+                                <span>{this.state.errorPhone}</span>
+                            </td>
                             <td><button type="submit" className="waves-effect waves-light btn">Add</button></td>
                         </tr>
                     </tbody>

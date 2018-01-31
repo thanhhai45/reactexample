@@ -49,24 +49,31 @@ class App extends Component {
         <ShowList todolist={this.state.list} 
                   todoDelete={this.removeData.bind(this)} 
                   dataEdit={this.findData.bind(this)}
+                  dataWillShow="1"
         />
       </div>
     );
   }
 
   addData = (todos) => {
-    if (todos) {
-      todoslist.push(todos);
-      console.log(todoslist);
-      this.setState({
-          list: todoslist
+      const id = parseInt(todos.id);
+      var data = _.findIndex(this.state.list, function (o, index) {
+          return o.id === id;
       });
-    }
-  }
+      if (data < 0) {
+          todoslist.push(todos);
+          this.setState({
+              list: todoslist
+          });
+      }
+      else {
+          var { list } = this.state;
+          list[data] = todos;
+          this.setState({list: this.state.list});
+      }
+  };
 
   removeData = (id) => {
-    // var obj = this.findDataById.bind(this, id);
-    // console.log(obj);
     if (true) {
         _.remove(this.state.list, item => item.id === id);
         console.log(this.state.list);
@@ -78,13 +85,6 @@ class App extends Component {
     this.setState({ obj: _.find(this.state.list, function (o) { return o.id === id; }) });
   }
 
-  // findDataById = (id) => {
-  //     _.find(this.state.list, (item) => {
-  //         if (item.id === id) {
-  //             return item;
-  //         }
-  //     });
-  // }
 }
 
 export default App;

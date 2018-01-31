@@ -20,20 +20,37 @@ class ShowList extends Component {
                         </thead>
 
                         <tbody>
-                        {this.props.todolist.map((item, index) =>
-                           <tr key={index}>
-                                <td>{item.id}</td>
-                                <td>{item.fullname}</td>
-                                <td>{item.phone}</td>
-                                <td>
-                                    <button 
+                        {this.props.todolist.map((item, index) => {
+                                if (parseInt(this.props.dataWillShow) === parseInt(item.id)) {
+                                    return <tr key={index}>
+                                        <td>{item.id}</td>
+                                        <td>{item.fullname}</td>
+                                        <td>{item.phone}</td>
+                                        <td>
+                                            <button
                                             onClick={this.props.dataEdit.bind(this, item.id)}
                                             className="waves-effect waves-light btn green">Edit</button>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <button onClick={this.props.todoDelete.bind(this, item.id)}
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button onClick={this.props.todoDelete.bind(this, item.id)}
                                             className="waves-effect waves-light btn red">Delete</button>
-                                </td>
-                            </tr>
+                                        </td>
+                                        </tr>
+                                } else {
+                                    return <tr key={index}>
+                                        <td>{item.id}</td>
+                                        <td>{item.fullname}</td>
+                                        <td>{item.phone}</td>
+                                        <td>
+                                            <button
+                                                onClick={this.props.dataEdit.bind(this, item.id)}
+                                                className="waves-effect waves-light btn green">Edit</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button onClick={this.props.todoDelete.bind(this, item.id)}
+                                                    className="waves-effect waves-light btn red">Delete</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
                         )}
                         </tbody>
                     </table>
