@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import './FormAdd.css';
 class FormAdd extends Component {
     constructor(props) {
         super(props);
@@ -8,10 +9,12 @@ class FormAdd extends Component {
             id: id,
             fullname: fullname,
             phone: phone,
-            active: ''
+            active: '',
+            errorPhone: ''
         }
         this.handleChangeId = this.handleChangeId.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangePhone = this.handleChangePhone.bind(this);
         this.handleChangePhone = this.handleChangePhone.bind(this);
     }
 
@@ -25,7 +28,6 @@ class FormAdd extends Component {
             id: id,
             fullname: name,
             phone: phone,
-            active:'disabled'
         };
         this.props.addData(arListTodo);
     }
@@ -49,12 +51,24 @@ class FormAdd extends Component {
         this.setState({ phone: event.target.value });
     }
 
-
+    handlePressPhone(event) {
+        if (event.keyCode === 8 && event.target.value.length === 0) {
+            this.setState({ errorPhone: '' });
+        } else if (event.target.value.length < 10 || event.target.value.length > 11) {
+            this.setState({ errorPhone: 'The phone isnt less than 10 and more than 11 number' });
+        }
+        else {
+            var regex = /(09|01[2|6|8|9])+([0-9]{8})\b/;
+            if (regex.test(event.target.value)) {
+                this.setState({ errorPhone: '' });
+            }
+        }
+    };
 
     render() {
         return (
             <form action="" onSubmit={this.addData.bind(this)}>
-                <table>
+                <table className='showlsit'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -66,8 +80,10 @@ class FormAdd extends Component {
                     <tbody>
                         <tr>
                             <td><input type="text" onChange={this.handleChangeId} ref="id" placeholder="ID" value={this.state.id} /></td>
-                            <td><input type="text" onChange={this.handleChangeName}  ref="name" placeholder="FullName" value={this.state.fullname||''} /></td>
-                            <td><input type="text" onChange={this.handleChangePhone} ref="phone" placeholder="Phone Number" value={this.state.phone} /></td>
+                            <td><input type="text" onChange={this.handleChangeName} ref="name" placeholder="FullName" value={this.state.fullname || ''} /></td>
+                            <td><input type="text" onChange={this.handleChangePhone} onKeyUp={this.handlePressPhone.bind(this)} ref="phone" placeholder="Phone Number" value={this.state.phone} />
+                                <span>{this.state.errorPhone}</span>
+                            </td>
                             <td><button type="submit" disabled={this.state.id ? '' : 'disabled'} className="waves-effect waves-light btn">Add</button></td>
                         </tr>
                     </tbody>
